@@ -1,5 +1,5 @@
 const fs = require('fs');
-const mm = require('@magenta/music/node/music_vae_node');
+const mm = require('@magenta/music');
 const model = new mm.MusicVAE('https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small');
 
 async function run() {
