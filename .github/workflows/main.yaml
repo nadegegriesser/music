@@ -1,0 +1,19 @@
+on:
+  schedule: [{cron: '0 7 * * *'}]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: sudo apt update && sudo apt install -y fluidsynth ffmpeg curl
+      - run: npm ci
+      - run: node scripts/interpolate.js
+      - run: node scripts/convert_audio.js
+      - run: node scripts/generate_tts.js
+      - run: node scripts/render_video.js
+      - env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+      - run: node scripts/upload_youtube.js
