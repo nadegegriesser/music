@@ -1,0 +1,14 @@
+{
+  "name": "lofi-elise-bot",
+  "version": "1.0.0",
+  "main": "scripts/run.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node scripts/run.js"
+  },
+  "dependencies": {
+    "@magenta/music": "^1.23.0",
+    "google-tts-api": "^2.0.1",
+    "fluent-ffmpeg": "^2.1.2"
+  }
+}
