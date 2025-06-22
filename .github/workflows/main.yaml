@@ -12,9 +12,9 @@ jobs:
       - run: node scripts/interpolate.js
       - run: node scripts/convert_audio.js
       - run: node scripts/generate_tts.js
-      - run: node scripts/render_video.js
-      - env:
+        env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+      - run: node scripts/render_video.js
       - run: node scripts/upload_youtube.js
