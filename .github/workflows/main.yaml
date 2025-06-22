@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: sudo apt update && sudo apt install -y fluidsynth ffmpeg curl
-      - run: npm ci
+      - run: npm install
       - run: node scripts/interpolate.js
       - run: node scripts/convert_audio.js
       - run: node scripts/generate_tts.js
