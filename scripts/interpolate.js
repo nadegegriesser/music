@@ -1,10 +1,11 @@
 const fs = require('fs');
 const mm = require('@magenta/music/node/music_vae');
+const core = require('@magenta/music/node/core');
 const model = new mm.MusicVAE('https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small');
 
 async function run() {
   await model.initialize();
-  const elise = mm.midiToSequenceProto(fs.readFileSync('midi/fur_elise.mid'));
+  const elise = core.midiToSequenceProto(fs.readFileSync('midi/fur_elise.mid'));
   //const jazz = mm.midiToSequenceProto(fs.readFileSync('seeds/jazz_seed.mid'));
   const jazzSeed = {
   notes: [
