@@ -9,6 +9,7 @@
   "dependencies": {
     "@magenta/music": "^1.23.0",
     "google-tts-api": "^2.0.1",
-    "fluent-ffmpeg": "^2.1.2"
+    "fluent-ffmpeg": "^2.1.2",
+    "@tensorflow/tfjs-node": "^4.22.0"
   }
 }
