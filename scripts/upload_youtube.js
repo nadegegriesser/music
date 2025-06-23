@@ -1,5 +1,6 @@
-const fs = require('fs');
-const { google } = require('googleapis');
+import {readFileSync, createReadStream} from 'fs';
+import {google} from 'googleapis';
+
 const OAuth2 = google.auth.OAuth2;
 const credentials = JSON.parse(fs.readFileSync('client_secret.json'));
 const oauth2 = new OAuth2(credentials.installed.client_id, credentials.installed.client_secret, credentials.installed.redirect_uris[0]);
