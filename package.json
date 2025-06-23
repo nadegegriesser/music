@@ -1,7 +1,6 @@
 {
   "name": "lofi-elise-bot",
   "version": "1.0.0",
-  "type": "module",
   "main": "scripts/run.js",
   "scripts": {
     "start": "node scripts/run.js"

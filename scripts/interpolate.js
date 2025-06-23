@@ -1,8 +1,8 @@
-import {readFileSync, writeFileSync} from 'fs';
-import {MusicVAE, sequenceProtoToMidi} from '@magenta/music/node/music_vae';
-import {midiToSequenceProto} from '@magenta/music/node/core';
+const fs = require('fs');
+const mvae = require('@magenta/music/node/music_vae');
+const core = require('@magenta/music/node/core');
 
-const model = new mm.MusicVAE('https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small');
+const model = new mvae.MusicVAE('https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small');
 
 async function run() {
   await model.initialize();

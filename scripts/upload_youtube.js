@@ -1,5 +1,5 @@
-import {readFileSync, createReadStream} from 'fs';
-import {google} from 'googleapis';
+const fs = require('fs');
+const { google } = require('googleapis');
 
 const OAuth2 = google.auth.OAuth2;
 const oauth2 = new OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, 'https://developers.google.com/oauthplayground');
