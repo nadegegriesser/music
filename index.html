@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Music</title>
+
+    <!-- import the webpage's javascript file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/15.1.22/Tone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/4.22.0/tf.min.js"></script>
+    <!-- Core library, since we're going to use a player -->
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.23.1/es6/core.js"></script>
+    <!--Model we want to use -->
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.23.1/es6/music_vae.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.23.1/es6/protobuf.js"></script>
+    <script src="scripts/split.js"></script>
+    <script defer>
+      const player = new core.Player();
+      const mvae = new music_vae.MusicVAE(
+        "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small"
+      );
+      (async function() {
+        await mvae.initialize();
+        const elise = await core.urlToNoteSequence('https://bitmidi.com/uploads/28362.mid');
+        console.log(elise);
+        const sequences = split(elise);
+        //console.log(sequences);
+        const chunks = [];
+        for (let seq of sequences) {
+            chunks.push(core.sequences.quantizeNoteSequence(seq, 4));
+        }
+        console.log(chunks);
+        let splitSong = core.sequences.concatenate(chunks);
+        console.log(splitSong);
+        const jazzSeed = {
+            notes: [
+                { pitch: 60, startTime: 0, endTime: 0.5 },
+                { pitch: 63, startTime: 0.5, endTime: 1 },
+                { pitch: 67, startTime: 1, endTime: 1.5 },
+                { pitch: 70, startTime: 1.5, endTime: 2 }
+            ],
+            totalTime: 2,
+            quantizationInfo: { stepsPerQuarter: 4 }
+            };
+        let results = [];
+        for (let chunk of chunks) {
+            let res = await mvae.interpolate([chunk, jazzSeed], 3);
+            results.push(res[2]);
+        }
+        let song = core.sequences.concatenate(results);
+
+        playSongButton.textContent = "play original";
+        
+        playSongButton.addEventListener("click", () => {
+          const audioContext = Tone.context._context;
+          if (audioContext.state !== "started") {
+            audioContext.resume();
+          }
+
+          if (player.getPlayState() !== "started") {
+            playSongButton.textContent = "playing original";
+            //player.start(elise).then(() => {playSongButton.textContent = "play original";});
+            LITTLE_TEAPOT = {
+    notes: [
+      { pitch: 69, quantizedStartStep: 0, quantizedEndStep: 2, program: 0 },
+      { pitch: 71, quantizedStartStep: 2, quantizedEndStep: 4, program: 0 },
+      { pitch: 73, quantizedStartStep: 4, quantizedEndStep: 6, program: 0 },
+      { pitch: 74, quantizedStartStep: 6, quantizedEndStep: 8, program: 0 },
+      { pitch: 76, quantizedStartStep: 8, quantizedEndStep: 10, program: 0 },
+      { pitch: 81, quantizedStartStep: 12, quantizedEndStep: 16, program: 0 },
+      { pitch: 78, quantizedStartStep: 16, quantizedEndStep: 20, program: 0 },
+      { pitch: 81, quantizedStartStep: 20, quantizedEndStep: 24, program: 0 },
+      { pitch: 76, quantizedStartStep: 24, quantizedEndStep: 26, program: 0 }
+    ],
+    quantizationInfo: { stepsPerQuarter: 4 },
+    totalQuantizedSteps: 26,
+  };
+            TWINKLE_TWINKLE = {
+  notes: [
+    {pitch: 60, startTime: 0.0, endTime: 0.5},
+    {pitch: 60, startTime: 0.5, endTime: 1.0},
+    {pitch: 67, startTime: 1.0, endTime: 1.5},
+    {pitch: 67, startTime: 1.5, endTime: 2.0},
+    {pitch: 69, startTime: 2.0, endTime: 2.5},
+    {pitch: 69, startTime: 2.5, endTime: 3.0},
+    {pitch: 67, startTime: 3.0, endTime: 4.0},
+    {pitch: 65, startTime: 4.0, endTime: 4.5},
+    {pitch: 65, startTime: 4.5, endTime: 5.0},
+    {pitch: 64, startTime: 5.0, endTime: 5.5},
+    {pitch: 64, startTime: 5.5, endTime: 6.0},
+    {pitch: 62, startTime: 6.0, endTime: 6.5},
+    {pitch: 62, startTime: 6.5, endTime: 7.0},
+    {pitch: 60, startTime: 7.0, endTime: 8.0},  
+  ],
+  totalTime: 8
+};
+            const star = core.sequences.quantizeNoteSequence(TWINKLE_TWINKLE, 4);
+  const teapot = core.sequences.quantizeNoteSequence(LITTLE_TEAPOT, 4);
+  mvae
+  .interpolate([star, LITTLE_TEAPOT], 3)
+  .then((sample) => {
+    const concatenated = core.sequences.concatenate(sample);
+    player.start(concatenated).then(() => {playSongButton.textContent = "play original";});
+  });
+          }
+        });
+
+        playSplitSongButton.textContent = "play geklebte stücke";
+        
+        playSplitSongButton.addEventListener("click", () => {
+          const audioContext = Tone.context._context;
+          if (audioContext.state !== "started") {
+            audioContext.resume();
+          }
+
+          if (player.getPlayState() !== "started") {
+            playSplitSongButton.textContent = "playing geklebte stücke";
+            player.start(splitSong).then(() => {playSplitSongButton.textContent = "play geklebte stücke";});
+          }
+        });
+
+        playInterpolatedButton.textContent = "play interpol";
+        
+        playInterpolatedButton.addEventListener("click", () => {
+          const audioContext = Tone.context._context;
+          if (audioContext.state !== "started") {
+            audioContext.resume();
+          }
+
+          if (player.getPlayState() !== "started") {
+            playInterpolatedButton.textContent = "playing interpol";
+            player.start(song).then(() => {playInterpolatedButton.textContent = "play interpol";});
+          }
+        });
+
+      })();
+    </script>
+  </head>
+  <body>
+    <button id="playSongButton">
+      loading...
+    </button>
+    <button id="playSplitSongButton">
+      loading...
+    </button>
+    <button id="playInterpolatedButton">
+      loading...
+    </button>
+  </body>
+</html>
