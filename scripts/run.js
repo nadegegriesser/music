@@ -1,5 +1,5 @@
-require('./interpolate');
-require('./convert_audio');
-require('./generate_tts');
-require('./render_video');
-require('./upload_youtube');
+import './interpolate';
+import './convert_audio';
+import './generate_tts';
+import './render_video';
+import './upload_youtube';
