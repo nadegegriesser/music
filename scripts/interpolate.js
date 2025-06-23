@@ -19,6 +19,6 @@ async function run() {
   quantizationInfo: { stepsPerQuarter: 4 }
 };
   const [out] = await model.interpolate([elise, jazzSeed], 3);
-  fs.writeFileSync('audio/combined.mid', mm.sequenceProtoToMidi(out));
+  fs.writeFileSync('audio/combined.mid', core.sequenceProtoToMidi(out));
 }
 run();

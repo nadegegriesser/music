@@ -1,11 +1,8 @@
 {
-  "name": "lofi-elise-bot",
+  "name": "music",
   "version": "1.0.0",
-  "main": "scripts/run.js",
-  "scripts": {
-    "start": "node scripts/run.js"
-  },
-  "dependencies": {
+  "private": true,
+  "devDependencies": {
     "@magenta/music": "^1.23.0",
     "google-tts-api": "^2.0.1",
     "fluent-ffmpeg": "^2.1.2",
