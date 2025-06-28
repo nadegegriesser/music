@@ -67,7 +67,7 @@ function split(seq) {
     if (currentNotes.length !== 0) {
       const newSequence = core.sequences.clone(ns);
       newSequence.notes = currentNotes;
-      newSequence.tempos = [newTempo];
+      //newSequence.tempos = [newTempo];
       newSequence.totalQuantizedSteps = chunkSize;
       newSequence.totalTime = chunkSize;
       chunks.push(newSequence);
