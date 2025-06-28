@@ -18,7 +18,7 @@ function split(seq) {
     chunkSizes.push(ns.totalTime - prev.time);
   }
 
-  const notesBystartStep =
+  let notesBystartStep =
       ns.notes.sort((a, b) => a.startTime - b.startTime);
 
   const chunks = [];
@@ -28,6 +28,7 @@ function split(seq) {
     const tempo = temposByTime[c];
     let newTempo = {time: tempo.time - startStep, qpm: tempo.qpm};
     let currentNotes = [];
+    let notProcessed = [];
     for (let i = 0; i < notesBystartStep.length; i++) {
       const note = notesBystartStep[i];
 
@@ -43,7 +44,7 @@ function split(seq) {
       }
       // If this note fits in the chunk, add it to the current sequence.
       if (note.endTime <= chunkSize) {
-        currentNotes.push(protobuf.NoteSequence.Note.create(note));
+        currentNotes.push(note);
       } else {
         // If this note spills over, truncate it and add it to this sequence.
         if (note.startTime < chunkSize) {
@@ -56,10 +57,12 @@ function split(seq) {
           // with it, and reset it for the next loop.
           note.startTime = startStep + chunkSize;
           note.endTime = originalEndStep;
+          notProcessed.push(note);
         } else {
           // We didn't truncate this note at all, so reset it for the next loop.
           note.startTime = originalStartStep;
           note.endTime = originalEndStep;
+          notProcessed.push(note);
         }
       }
     }
@@ -72,6 +75,7 @@ function split(seq) {
       chunks.push(newSequence);
     }
     startStep += chunkSize;
+    notesBystartStep = notProcessed;
   }
   return chunks;
 }
