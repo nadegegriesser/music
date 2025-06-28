@@ -25,9 +25,9 @@
         const elise = await core.urlToNoteSequence('https://bitmidi.com/uploads/28362.mid');
         console.log(elise);
         const sequences = split(elise);
-        //console.log(sequences);
+        console.log(sequences);
         const chunks = [];
-        for (let seq of sequences) {
+        for (let seq of sequences.chunks) {
             chunks.push(core.sequences.quantizeNoteSequence(seq, 4));
         }
         console.log(chunks);
