@@ -49,7 +49,6 @@ function split(seq) {
         // If this note spills over, truncate it and add it to this sequence.
         if (note.startTime < chunkSize) {
           const newNote = protobuf.NoteSequence.Note.create(note);
-          newNote.startTime = 0;
           newNote.endTime = chunkSize;
           currentNotes.push(newNote);
 
