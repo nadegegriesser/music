@@ -75,5 +75,5 @@ function split(seq) {
     }
     startStep += chunkSize;
   }
-  return {chunks: chunks; splits: splits};
+  return {chunks: chunks, splits: splits};
 }
