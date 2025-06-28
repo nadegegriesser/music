@@ -44,7 +44,7 @@ function split(seq) {
       }
       // If this note fits in the chunk, add it to the current sequence.
       if (note.endTime <= chunkSize) {
-        currentNotes.push(note);
+        currentNotes.push(protobuf.NoteSequence.Note.create(note));
       } else {
         // If this note spills over, truncate it and add it to this sequence.
         if (note.startTime < chunkSize) {
