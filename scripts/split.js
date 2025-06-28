@@ -76,6 +76,7 @@ function split(seq) {
     }
     startStep += chunkSize;
     notesBystartStep = notProcessed;
+    break;
   }
   return chunks;
 }
