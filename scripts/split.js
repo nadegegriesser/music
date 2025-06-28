@@ -71,6 +71,8 @@ function split(seq) {
       newSequence.totalQuantizedSteps = chunkSize;
       newSequence.totalTime = chunkSize;
       chunks.push(newSequence);
+    } else {
+      console.log(newTempo);
     }
     startStep += chunkSize;
   }
