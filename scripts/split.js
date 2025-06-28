@@ -22,13 +22,13 @@ function split(seq) {
       ns.notes.sort((a, b) => a.startTime - b.startTime);
 
   const chunks = [];
+  const splits = [];
   let startStep = 0;
   for (let c = 0; c < chunkSizes.length; c++) {
     let chunkSize = chunkSizes[c];
     const tempo = temposByTime[c];
     let newTempo = {time: tempo.time - startStep, qpm: tempo.qpm};
     let currentNotes = [];
-    let notProcessed = [];
     for (let i = 0; i < notesBystartStep.length; i++) {
       const note = notesBystartStep[i];
 
@@ -51,6 +51,7 @@ function split(seq) {
           const newNote = protobuf.NoteSequence.Note.create(note);
           newNote.endTime = chunkSize;
           currentNotes.push(newNote);
+          splits.push(i);
 
           // Keep the rest of this note, and make sure that next loop still deals
           // with it, and reset it for the next loop.
@@ -61,7 +62,6 @@ function split(seq) {
           // We didn't truncate this note at all, so reset it for the next loop.
           note.startTime = originalStartStep;
           note.endTime = originalEndStep;
-          notProcessed.push(note);
         }
       }
     }
@@ -74,7 +74,6 @@ function split(seq) {
       chunks.push(newSequence);
     }
     startStep += chunkSize;
-    notesBystartStep = notProcessed;
   }
-  return chunks;
+  return {chunks: chunks; splits: splits};
 }
