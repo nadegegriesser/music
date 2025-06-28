@@ -32,8 +32,6 @@
         }
         console.log(chunks);
         let splitSong = core.sequences.concatenate(chunks);
-        console.log('concat', splitSong);
-        splitSong = core.sequences.mergeConsecutiveNotes(splitSong);
         console.log('merged', core.sequences.unquantizeSequence(splitSong));
         /*const jazzSeed = {
             notes: [
