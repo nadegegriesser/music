@@ -57,7 +57,6 @@ function split(seq) {
           // with it, and reset it for the next loop.
           note.startTime = startStep + chunkSize;
           note.endTime = originalEndStep;
-          notProcessed.push(note);
         } else {
           // We didn't truncate this note at all, so reset it for the next loop.
           note.startTime = originalStartStep;
