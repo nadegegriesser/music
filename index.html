@@ -106,13 +106,14 @@
             const mvae = new music_vae.MusicVAE(modelSelect.value);
             mvae.initialize().then(() => {
               console.log('initialized');
-              let results = [];
+              let promises = [];
               for (let chunk of chunks) {
-                  results.push(mvae.interpolate([chunk, jazzSeed], 3));
+                  promises.push(mvae.interpolate([chunk, jazzSeed], 3));
                 );
               }
-              Promise.all(results).then((values) => {
-                const song = core.sequences.concatenate(values);
+              Promise.all(promises).then((values) => {
+                let interpolated = values.map(val => val[1]);
+                const song = core.sequences.concatenate(interpolated);
                 console.log('concqt', song);
                 player.start(song).then(() => {
                   playInterpolatedButton.textContent = "play merged";
