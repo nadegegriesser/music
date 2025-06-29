@@ -124,8 +124,10 @@ json.map( (checkpoint, i) => {
           mvae.initialize().then(() => {console.log('initialized');
             let results = [];
             for (let chunk of chunks) {
-                let res = await mvae.interpolate([chunk, jazzSeed], 3);
-                results.push(res[2]);
+                mvae.interpolate([chunk, jazzSeed], 3).then((res) => {
+                  results.push(res[2]);
+                }
+              );
             }
             song = core.sequences.concatenate(results);
           });
