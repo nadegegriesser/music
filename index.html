@@ -26,6 +26,7 @@
   .then((json) => {console.log(modelSelect, json); 
 json.map( (checkpoint, i) => {
                     if (checkpoint.model=='"MusicVAE"') {
+                      console.log(checkpoint);
     let opt = document.createElement("option");
     opt.value = checkpoint.url;
     opt.innerHTML = checkpoint.id;
