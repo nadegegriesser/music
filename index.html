@@ -59,12 +59,6 @@ json.map( (checkpoint, i) => {
             totalTime: 2,
             quantizationInfo: { stepsPerQuarter: 4 }
             };
-        let results = [];
-        for (let chunk of chunks) {
-            let res = await mvae.interpolate([chunk, jazzSeed], 3);
-            results.push(res[2]);
-        }
-        let song = core.sequences.concatenate(results);
 
         playSongButton.textContent = "play original";
         
@@ -110,17 +104,8 @@ json.map( (checkpoint, i) => {
 
           if (player.getPlayState() !== "started") {
             playInterpolatedButton.textContent = "playing merged";
-            player.start(song).then(() => {playInterpolatedButton.textContent = "play merged";});
-          } else {
-            player.stop();
-            playInterpolatedButton.textContent = "play merged";
-          }
-        });
-
-        modelSelect.addEventListener("change", (event) => {
-          console.log('change', event.target.value);
-          mvae = new music_vae.MusicVAE(event.target.value);
-          mvae.initialize().then(() => {console.log('initialized');
+            const mvae = new music_vae.MusicVAE(modelSelect.value);
+            mvae.initialize().then(() => {console.log('initialized');
             let results = [];
             for (let chunk of chunks) {
                 mvae.interpolate([chunk, jazzSeed], 3).then((res) => {
@@ -128,10 +113,14 @@ json.map( (checkpoint, i) => {
                 }
               );
             }
-            song = core.sequences.concatenate(results);
+            const song = core.sequences.concatenate(results);
+            player.start(song).then(() => {playInterpolatedButton.textContent = "play merged";});
           });
+          } else {
+            player.stop();
+            playInterpolatedButton.textContent = "play merged";
+          }
         });
-
       })();
     </script>
   </head>
