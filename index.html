@@ -16,6 +16,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.23.1/es6/protobuf.js"></script>
     <script src="scripts/split.js"></script>
     <script defer>
+      fetch('https://goo.gl/magenta/js-checkpoints-json')
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((json) => console.log(json))
+  .catch((err) => console.error(`Fetch problem: ${err.message}`));
       const player = new core.Player();
       const mvae = new music_vae.MusicVAE(
         "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small"
