@@ -51,7 +51,7 @@ json.map( (checkpoint, i) => {
         let splitSong = core.sequences.concatenate(chunks);
         //console.log('merged', core.sequences.unquantizeSequence(splitSong));
         console.log('merged', splitSong);
-        /*const jazzSeed = {
+        const jazzSeed = {
             notes: [
                 { pitch: 60, startTime: 0, endTime: 0.5 },
                 { pitch: 63, startTime: 0.5, endTime: 1 },
@@ -65,8 +65,8 @@ json.map( (checkpoint, i) => {
         for (let chunk of chunks) {
             let res = await mvae.interpolate([chunk, jazzSeed], 3);
             results.push(res[2]);
-        }*/
-        let song = core.sequences.mergeConsecutiveNotes(splitSong);
+        }
+        let song = core.sequences.concatenate(results);
 
         playSongButton.textContent = "play original";
         
@@ -121,7 +121,14 @@ json.map( (checkpoint, i) => {
 
         modelSelect.addEventListener("change", (event) => {
           mvae = new music_vae.MusicVAE(event.target.value);
-          mvae.initialize().then(() => {console.log('initialized');});
+          mvae.initialize().then(() => {console.log('initialized');
+            let results = [];
+            for (let chunk of chunks) {
+                let res = await mvae.interpolate([chunk, jazzSeed], 3);
+                results.push(res[2]);
+            }
+            song = core.sequences.concatenate(results);
+          });
         });
 
       })();
