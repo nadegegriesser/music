@@ -108,8 +108,7 @@
               console.log('initialized');
               let promises = [];
               for (let chunk of chunks) {
-                  promises.push(mvae.interpolate([chunk, jazzSeed], 3));
-                );
+                promises.push(mvae.interpolate([chunk, jazzSeed], 3));
               }
               Promise.all(promises).then((values) => {
                 let interpolated = values.map(val => val[1]);
