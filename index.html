@@ -108,15 +108,16 @@
               console.log('initialized');
               let results = [];
               for (let chunk of chunks) {
-                  mvae.interpolate([chunk, jazzSeed], 3).then((res) => {
-                    console.log('interpolated');
-                    results.push(res[2]);
-                  }
+                  results.push(mvae.interpolate([chunk, jazzSeed], 3));
                 );
               }
-              const song = core.sequences.concatenate(results);
-              console.log('concqt', song);
-              player.start(song).then(() => {playInterpolatedButton.textContent = "play merged";});
+              Promise.all(results).then((values) => {
+                const song = core.sequences.concatenate(values);
+                console.log('concqt', song);
+                player.start(song).then(() => {
+                  playInterpolatedButton.textContent = "play merged";
+                });
+              }
             });
           } else {
             player.stop();
