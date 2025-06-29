@@ -36,9 +36,7 @@ json.map( (checkpoint, i) => {
                   })
   .catch((err) => console.error(`Fetch problem: ${err.message}`));
       const player = new core.Player();
-      let mvae = new music_vae.MusicVAE(modelSelect.value);
       (async function() {
-        await mvae.initialize();
         const elise = await core.urlToNoteSequence('https://bitmidi.com/uploads/28362.mid');
         console.log(elise);
         const sequences = split(elise);
@@ -120,6 +118,7 @@ json.map( (checkpoint, i) => {
         });
 
         modelSelect.addEventListener("change", (event) => {
+          console.log('change', event.target.value);
           mvae = new music_vae.MusicVAE(event.target.value);
           mvae.initialize().then(() => {console.log('initialized');
             let results = [];
