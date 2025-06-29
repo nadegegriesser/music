@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.23.1/es6/protobuf.js"></script>
     <script src="scripts/split.js"></script>
     <script defer>
-      fetch('https://goo.gl/magenta/js-checkpoints-json')
+      fetch('checkpoints.json')
   .then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
