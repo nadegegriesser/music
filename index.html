@@ -36,9 +36,7 @@ json.map( (checkpoint, i) => {
                   })
   .catch((err) => console.error(`Fetch problem: ${err.message}`));
       const player = new core.Player();
-      const mvae = new music_vae.MusicVAE(
-        "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small"
-      );
+      let mvae = new music_vae.MusicVAE(modelSelect.value);
       (async function() {
         await mvae.initialize();
         const elise = await core.urlToNoteSequence('https://bitmidi.com/uploads/28362.mid');
@@ -81,6 +79,9 @@ json.map( (checkpoint, i) => {
           if (player.getPlayState() !== "started") {
             playSongButton.textContent = "playing original";
             player.start(elise).then(() => {playSongButton.textContent = "play original";});
+          } else {
+            player.stop();
+            playSongButton.textContent = "play original";
           }
         });
 
@@ -95,6 +96,9 @@ json.map( (checkpoint, i) => {
           if (player.getPlayState() !== "started") {
             playSplitSongButton.textContent = "playing geklebte stücke";
             player.start(splitSong).then(() => {playSplitSongButton.textContent = "play geklebte stücke";});
+          } else {
+            player.stop();
+            playSplitSongButton.textContent = "play geklebte stücke";
           }
         });
 
@@ -109,7 +113,15 @@ json.map( (checkpoint, i) => {
           if (player.getPlayState() !== "started") {
             playInterpolatedButton.textContent = "playing merged";
             player.start(song).then(() => {playInterpolatedButton.textContent = "play merged";});
+          } else {
+            player.stop();
+            playInterpolatedButton.textContent = "play merged";
           }
+        });
+
+        modelSelect.addEventListener("change", (event) => {
+          mvae = new music_vae.MusicVAE(event.target.value);
+          mvae.initialize().then(() => {console.log('initialized');});
         });
 
       })();
