@@ -23,14 +23,13 @@
     }
     return response.json();
   })
-  .then((json) => {console.log(json); 
-                   let selectTag = document.createElement('select');
+  .then((json) => {console.log(modelSelect, json); 
 json.map( (checkpoint, i) => {
                     if (checkpoint.model=='"MusicVAE"') {
     let opt = document.createElement("option");
     opt.value = checkpoint.url;
     opt.innerHTML = checkpoint.id;
-    selectTag.append(opt);
+    modelSelect.append(opt);
                     }
 });
                   })
@@ -116,6 +115,8 @@ json.map( (checkpoint, i) => {
     </script>
   </head>
   <body>
+    <select id="modelSelect">
+    </select>
     <button id="playSongButton">
       loading...
     </button>
