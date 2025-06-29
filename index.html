@@ -23,7 +23,17 @@
     }
     return response.json();
   })
-  .then((json) => console.log(json))
+  .then((json) => {console.log(json); 
+                   let selectTag = document.createElement('select');
+json.map( (checkpoint, i) => {
+                    if (checkpoint.model=='"MusicVAE"') {
+    let opt = document.createElement("option");
+    opt.value = checkpoint.url;
+    opt.innerHTML = checkpoint.id;
+    selectTag.append(opt);
+                    }
+});
+                  })
   .catch((err) => console.error(`Fetch problem: ${err.message}`));
       const player = new core.Player();
       const mvae = new music_vae.MusicVAE(
